@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { trpc } from "../utils/trpc";
+import { useEffect, useState } from 'react'
 import type { inferProcedureOutput } from "@trpc/server";
 import type { AppRouter } from "@acme/api";
 import { useAuth, UserButton } from "@clerk/nextjs";
@@ -18,9 +19,23 @@ const PostCard: React.FC<{
     </div>
   );
 };
-
+type PostType = {
+  id: string,
+  title: string,
+  content: string
+}
 const Home: NextPage = () => {
-  const postQuery = trpc.post.all.useQuery();
+  //const postQuery = trpc.post.all.useQuery();
+  const postQuery = trpc.post.all.useMutation();
+  const [data, setData] = useState<PostType[]>([])
+  useEffect( () => {
+    postQuery.mutate(undefined, {
+      onSuccess: (result) => {
+        setData(result)
+      }
+    })
+  },[])
+  
 
   return (
     <>
@@ -37,15 +52,24 @@ const Home: NextPage = () => {
           <AuthShowcase />
 
           <div className="flex h-[60vh] justify-center overflow-y-scroll px-4 text-2xl">
-            {postQuery.data ? (
+            {/* {postQuery.data ? ( */}
+            {data ? (
               <div className="flex flex-col gap-4">
-                {postQuery.data?.map((p) => {
+                {data?.map((p) => {
                   return <PostCard key={p.id} post={p} />;
                 })}
               </div>
             ) : (
               <p>Loading..</p>
             )}
+          </div>
+          <div>
+            <h1>New post</h1>
+            Post title:
+            <input />
+            Post contents:
+            <input />
+            <button>Submit</button>
           </div>
         </div>
       </main>

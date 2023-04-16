@@ -4,8 +4,9 @@ import type { NextRequest } from "next/server";
 import { getAuth } from "@clerk/nextjs/server";
 
 export default withClerkMiddleware((_req: NextRequest) => {
-  const { debug } = getAuth(_req);
+  const { debug, userId } = getAuth(_req);
   console.log("debug from middleware", debug());
+  console.log("userId from middleware", userId)
   return NextResponse.next();
 });
 
