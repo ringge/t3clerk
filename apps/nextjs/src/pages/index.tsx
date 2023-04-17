@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { trpc } from "../utils/trpc";
+import { trpc, setToken } from "../utils/trpc";
 import { useEffect, useState } from 'react'
 import type { inferProcedureOutput } from "@trpc/server";
 import type { AppRouter } from "@acme/api";
@@ -8,7 +8,6 @@ import { useAuth, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { getAuth } from "@clerk/nextjs/server";
 import { type GetServerSideProps } from 'next';
-import { setToken } from '../utils/trpc'
 
 const PostCard: React.FC<{
   post: inferProcedureOutput<AppRouter["post"]["all"]>[number];
@@ -37,6 +36,7 @@ const Home: NextPage = () => {
   useEffect( () => {
     const grabToken = async () => {
       const token = await getToken()
+      console.log('token from frontend:', token)
       setToken(token || "")
     }
     grabToken()

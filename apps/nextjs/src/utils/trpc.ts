@@ -19,6 +19,7 @@ export function setToken(newToken: string) {
    * You can also save the token to cookies, and initialize from
    * cookies above.
    */
+  console.log('new token:', newToken)
   token = newToken;
 }
 
