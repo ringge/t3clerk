@@ -6,7 +6,7 @@ import { trpc } from "../utils/trpc";
 
 const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
   return (
-    <ClerkProvider {...pageProps}>
+    <ClerkProvider {...pageProps} publishableKey="pk_live_Y2xlcmsuZ2lmbWFpbC5ncSQ">
       <Component {...pageProps} />
     </ClerkProvider>
   );

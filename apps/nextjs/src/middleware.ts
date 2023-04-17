@@ -8,7 +8,8 @@ export default withClerkMiddleware((_req: NextRequest) => {
   console.log("debug from middleware", debug());
   console.log("userId from middleware", userId)
   return NextResponse.next();
-});
+}
+);
 
 // Stop Middleware running on static files
 export const config = {

@@ -6,6 +6,8 @@ import type { inferProcedureOutput } from "@trpc/server";
 import type { AppRouter } from "@acme/api";
 import { useAuth, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
+import { getAuth } from "@clerk/nextjs/server";
+import { type GetServerSideProps } from 'next'
 
 const PostCard: React.FC<{
   post: inferProcedureOutput<AppRouter["post"]["all"]>[number];
@@ -24,7 +26,7 @@ type PostType = {
   title: string,
   content: string
 }
-const Home: NextPage = () => {
+const Home: NextPage<{userId: string}> = ({userId}) => {
   //const postQuery = trpc.post.all.useQuery();
   const postQuery = trpc.post.all.useMutation();
   const [data, setData] = useState<PostType[]>([])
@@ -35,7 +37,7 @@ const Home: NextPage = () => {
       }
     })
   },[])
-  
+  console.log('userId from Homepage:', userId)
 
   return (
     <>
@@ -63,14 +65,14 @@ const Home: NextPage = () => {
               <p>Loading..</p>
             )}
           </div>
-          <div>
+          {/* <div>
             <h1>New post</h1>
             Post title:
             <input />
             Post contents:
             <input />
             <button>Submit</button>
-          </div>
+          </div> */}
         </div>
       </main>
     </>
@@ -121,3 +123,11 @@ const AuthShowcase: React.FC = () => {
     </div>
   );
 };
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { userId } = getAuth(ctx.req)
+  console.log('userId from getserversideprops:', userId)
+  return {
+    props: {userId}, // will be passed to the page component as props
+  }
+}
+
