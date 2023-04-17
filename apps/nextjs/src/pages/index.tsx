@@ -36,7 +36,7 @@ const Home: NextPage = () => {
         setData(result)
       }
     })
-  },[postQuery])
+  },[])
 
   return (
     <>
