@@ -26,7 +26,7 @@ type PostType = {
   title: string,
   content: string
 }
-const Home: NextPage<{userId: string}> = ({userId}) => {
+const Home: NextPage = () => {
   //const postQuery = trpc.post.all.useQuery();
   const postQuery = trpc.post.all.useMutation();
   const [data, setData] = useState<PostType[]>([])
@@ -36,7 +36,7 @@ const Home: NextPage<{userId: string}> = ({userId}) => {
         setData(result)
       }
     })
-  },[])
+  },[postQuery])
   console.log('userId from Homepage:', userId)
 
   return (
@@ -123,11 +123,11 @@ const AuthShowcase: React.FC = () => {
     </div>
   );
 };
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { userId } = getAuth(ctx.req)
-  console.log('userId from getserversideprops:', userId)
-  return {
-    props: {userId}, // will be passed to the page component as props
-  }
-}
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//   const { userId } = getAuth(ctx.req)
+//   console.log('userId from getserversideprops:', userId)
+//   return {
+//     props: {userId}, // will be passed to the page component as props
+//   }
+// }
 
