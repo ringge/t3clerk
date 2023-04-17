@@ -34,8 +34,10 @@ export const trpc = createTRPCNext<AppRouter>({
             (opts.direction === "down" && opts.result instanceof Error),
         }),
         httpBatchLink({
-          headers: {
-            Authorization: token ?? undefined
+          headers() {
+            return {
+              Authorization: token ?? undefined
+            }
           },
           url: `${getBaseUrl()}/api/trpc`,
         }),

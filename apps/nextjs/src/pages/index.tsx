@@ -31,21 +31,18 @@ const Home: NextPage = () => {
   //const postQuery = trpc.post.all.useQuery();
   const {getToken} = useAuth();
   
-  const postQuery = trpc.post.all.useMutation();
-  const [data, setData] = useState<PostType[]>([])
+  
+  
   useEffect( () => {
     const grabToken = async () => {
       const token = await getToken()
       console.log('token from frontend:', token)
       setToken(token || "")
+
     }
     grabToken()
       .catch(console.error)
-    postQuery.mutate(undefined, {
-      onSuccess: (result) => {
-        setData(result)
-      }
-    })
+    
   },[])
 
   return (
@@ -61,8 +58,29 @@ const Home: NextPage = () => {
             Create <span className="text-[hsl(280,100%,70%)]">T3</span> Turbo
           </h1>
           <AuthShowcase />
+          <PostShow />
+        </div>
+      </main>
+    </>
+  );
+};
 
-          <div className="flex h-[60vh] justify-center overflow-y-scroll px-4 text-2xl">
+export default Home;
+
+const PostShow: React.FC = () => {
+  const postQuery = trpc.post.all.useMutation();
+  const [data, setData] = useState<PostType[]>([])
+  const submitHandler = () => {
+    postQuery.mutate(undefined, {
+      onSuccess: (result) => {
+        setData(result)
+      }
+    })
+  }
+  return (
+    <div>
+      <button onClick={submitHandler}>Click me to Show posts</button>
+      <div className="flex h-[60vh] justify-center overflow-y-scroll px-4 text-2xl">
             {/* {postQuery.data ? ( */}
             {data ? (
               <div className="flex flex-col gap-4">
@@ -74,21 +92,9 @@ const Home: NextPage = () => {
               <p>Loading..</p>
             )}
           </div>
-          {/* <div>
-            <h1>New post</h1>
-            Post title:
-            <input />
-            Post contents:
-            <input />
-            <button>Submit</button>
-          </div> */}
-        </div>
-      </main>
-    </>
-  );
-};
-
-export default Home;
+    </div>
+  )
+}
 
 const AuthShowcase: React.FC = () => {
   const { isSignedIn } = useAuth();
