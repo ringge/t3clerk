@@ -37,7 +37,6 @@ const Home: NextPage = () => {
       }
     })
   },[postQuery])
-  console.log('userId from Homepage:', userId)
 
   return (
     <>
