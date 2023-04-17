@@ -7,7 +7,8 @@ import type { AppRouter } from "@acme/api";
 import { useAuth, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { getAuth } from "@clerk/nextjs/server";
-import { type GetServerSideProps } from 'next'
+import { type GetServerSideProps } from 'next';
+import { setToken } from '../utils/trpc'
 
 const PostCard: React.FC<{
   post: inferProcedureOutput<AppRouter["post"]["all"]>[number];
@@ -26,11 +27,20 @@ type PostType = {
   title: string,
   content: string
 }
+
 const Home: NextPage = () => {
   //const postQuery = trpc.post.all.useQuery();
+  const {getToken} = useAuth();
+  
   const postQuery = trpc.post.all.useMutation();
   const [data, setData] = useState<PostType[]>([])
   useEffect( () => {
+    const grabToken = async () => {
+      const token = await getToken()
+      setToken(token || "")
+    }
+    grabToken()
+      .catch(console.error)
     postQuery.mutate(undefined, {
       onSuccess: (result) => {
         setData(result)
