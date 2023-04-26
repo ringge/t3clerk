@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { trpc, setToken } from "../utils/trpc";
+import { trpc } from "../utils/trpc";
 import { useEffect, useState } from 'react'
 import type { inferProcedureOutput } from "@trpc/server";
 import type { AppRouter } from "@acme/api";
@@ -29,21 +29,21 @@ type PostType = {
 
 const Home: NextPage = () => {
   //const postQuery = trpc.post.all.useQuery();
-  const {getToken} = useAuth();
+  // const {getToken} = useAuth();
   
   
   
-  useEffect( () => {
-    const grabToken = async () => {
-      const token = await getToken()
-      console.log('token from frontend:', token)
-      setToken(token || "")
+  // useEffect( () => {
+  //   const grabToken = async () => {
+  //     const token = await getToken()
+  //     console.log('token from frontend:', token)
+  //     setToken(token || "")
 
-    }
-    grabToken()
-      .catch(console.error)
+  //   }
+  //   grabToken()
+  //     .catch(console.error)
     
-  },[])
+  // },[])
 
   return (
     <>

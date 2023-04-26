@@ -5,7 +5,7 @@ import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "@acme/api";
 import { transformer } from "@acme/api/transformer";
 
-let token: string;
+// let token: string;
 
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
@@ -14,14 +14,14 @@ const getBaseUrl = () => {
   return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 };
 
-export function setToken(newToken: string) {
-  /**
-   * You can also save the token to cookies, and initialize from
-   * cookies above.
-   */
-  console.log('new token:', newToken)
-  token = newToken;
-}
+// export function setToken(newToken: string) {
+//   /**
+//    * You can also save the token to cookies, and initialize from
+//    * cookies above.
+//    */
+//   console.log('new token:', newToken)
+//   token = newToken;
+// }
 
 export const trpc = createTRPCNext<AppRouter>({
   config() {
@@ -34,11 +34,11 @@ export const trpc = createTRPCNext<AppRouter>({
             (opts.direction === "down" && opts.result instanceof Error),
         }),
         httpBatchLink({
-          headers() {
-            return {
-              Authorization: token ?? undefined
-            }
-          },
+          // headers() {
+          //   return {
+          //     Authorization: token ?? undefined
+          //   }
+          // },
           url: `${getBaseUrl()}/api/trpc`,
         }),
       ],
